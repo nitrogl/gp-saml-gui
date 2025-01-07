@@ -84,18 +84,18 @@ class SAMLLoginView:
         settings.set_user_agent(args.user_agent)
         self.wview.set_settings(settings)
 
-        if args.credentials:
-            self.credentials = {}
+        if args.login:
+            self.login = {}
             config = configparser.ConfigParser()
             try:
-                with open(args.credentials) as fp:
-                    config.read_file(itertools.chain(["[gp-saml-gui]\n"], fp), source=args.credentials)
+                with open(args.login) as fp:
+                    config.read_file(itertools.chain(["[gp-saml-gui]\n"], fp), source=args.login)
             except:
-                print("Error opening '%s'" % args.credentials)
+                print("Error opening or reading '%s'" % args.login)
                 config = None
             if config:
                 for x in ['username', 'password']:
-                    self.credentials[x] = config['gp-saml-gui'][x]
+                    self.login[x] = config['gp-saml-gui'][x]
 
         window.resize(500, 500)
         window.add(self.wview)
@@ -167,9 +167,9 @@ class SAMLLoginView:
         if not rs or not h:
             return
 
-        # Set credentials
-        for x in self.credentials:
-            self.setvalue_DOM_element(x, self.credentials[x])
+        # Set login credentials
+        for x in self.login:
+            self.setvalue_DOM_element(x, self.login[x])
         
         # convert to normal dict
         d = {}
@@ -313,7 +313,7 @@ def parse_args(args = None):
     g.add_argument('-u','--uri', action='store_true', help='Treat server as the complete URI of the SAML entry point, rather than GlobalProtect server')
     g.add_argument('--clientos', choices=set(pf2clientos.values()), default=default_clientos, help="clientos value to send (default is %(default)s)")
     p.add_argument('-l','--login', default='~/.gp-saml-gui-credentials',
-                   help='Read login credentials in this file (instead of default %(default)s)')
+                   help='Read login credentials from the file specified (instead of default %(default)s)')
     p.add_argument('-f','--field', dest='extra', action='append', default=[],
                    help='Extra form field(s) to pass to include in the login query string (e.g. "-f magic-cookie-value=deadbeef01234567")')
     p.add_argument('--allow-insecure-crypto', dest='insecure', action='store_true',
