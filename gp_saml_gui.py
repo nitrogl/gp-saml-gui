@@ -93,9 +93,9 @@ class SAMLLoginView:
             except:
                 print("Error opening or reading '%s'" % args.login)
                 config = None
-            if config:
+            if config and config.has_section(args.server):
                 for x in ['username', 'password']:
-                    self.login[x] = config['gp-saml-gui'][x]
+                    self.login[x] = config[args.server][x]
 
         window.resize(500, 500)
         window.add(self.wview)
