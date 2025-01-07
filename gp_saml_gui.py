@@ -31,6 +31,7 @@ import ssl
 import tempfile
 import configparser
 import itertools
+import json
 
 from operator import setitem
 from os import path, dup2, execvp, environ
@@ -145,7 +146,8 @@ class SAMLLoginView:
 
     def setvalue_DOM_element(self, selector, value):
         if self.wview:
-            self.wview.evaluate_javascript("document.getElementById('" + selector + "').value='" + value + "';", -1, None, None, None, None, None)
+            # 
+            self.wview.evaluate_javascript("document.getElementById(%s).value = %s;" % (json.dumps(selector), json.dumps(value)), -1, None, None, None, None, None)
 
     def on_load_changed(self, webview, event):
         if event != WebKit2.LoadEvent.FINISHED:
