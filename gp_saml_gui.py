@@ -146,7 +146,10 @@ class SAMLLoginView:
 
     def setvalue_DOM_element(self, selector, value):
         if self.wview:
-            # 
+            # name attibute
+            self.wview.evaluate_javascript("Array.from(document.getElementsByName(%s)).forEach(el => el.value = %s);" % (json.dumps(selector), json.dumps(value)), -1, None, None, None, None, None)
+            
+            # id attribute 
             self.wview.evaluate_javascript("document.getElementById(%s).value = %s;" % (json.dumps(selector), json.dumps(value)), -1, None, None, None, None, None)
 
     def on_load_changed(self, webview, event):
