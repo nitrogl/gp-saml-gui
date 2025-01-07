@@ -94,7 +94,7 @@ class SAMLLoginView:
                 print("Error opening or reading '%s'" % args.login)
                 config = None
             if config and config.has_section(args.server):
-                for x in ['username', 'password']:
+                for x in config[args.server]:
                     self.login[x] = config[args.server][x]
 
         window.resize(500, 500)
