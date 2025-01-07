@@ -85,6 +85,7 @@ class SAMLLoginView:
         self.wview.set_settings(settings)
 
         if args.login:
+            args.login = path.expanduser(args.login)
             self.login = {}
             config = configparser.ConfigParser()
             try:
