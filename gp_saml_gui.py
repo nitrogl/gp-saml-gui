@@ -89,8 +89,7 @@ class SAMLLoginView:
             self.login = {}
             config = configparser.ConfigParser()
             try:
-                with open(args.login) as fp:
-                    config.read_file(itertools.chain(["[gp-saml-gui]\n"], fp), source=args.login)
+                config.read(args.login)
             except:
                 print("Error opening or reading '%s'" % args.login)
                 config = None
